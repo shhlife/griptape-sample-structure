@@ -27,4 +27,4 @@ if __name__ == "__main__":
         load_dotenv()
 
     agent = Agent()
-    result = agent.run(input)
+    agent.run(input)
