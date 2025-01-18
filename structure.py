@@ -20,9 +20,9 @@ def setup_cloud_listener():
 
         load_dotenv()
         
+setup_cloud_listener()
+
 if __name__ == "__main__":
     args = sys.argv[1:]
-
-    setup_cloud_listener()
 
     Agent().run(*args)
