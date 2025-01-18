@@ -1,30 +1,28 @@
 import os
 import sys
 
-from dotenv import load_dotenv
-
-from griptape.structures import Agent
-from griptape.events import EventListener, EventBus
 from griptape.drivers import GriptapeCloudEventListenerDriver
+from griptape.events import EventBus, EventListener
+from griptape.structures import Agent
 
 def setup_cloud_listener():
-    api_key = os.environ.get("GT_CLOUD_API_KEY")
-    if not api_key:
-        raise ValueError("GT_CLOUD_API_KEY environment variable is required")
-    
-    EventBus.add_event_listeners([
-        EventListener(
-            event_listener_driver=GriptapeCloudEventListenerDriver(api_key=api_key)
-        )
-    ])
-
-if __name__ == "__main__":
-    input = sys.argv[1]
-
+    # Are we running in a managed environment?
     if "GT_CLOUD_STRUCTURE_RUN_ID" in os.environ:
-        setup_cloud_listener()
+        # If so, the runtime takes care of loading the .env file
+        EventBus.add_event_listener(
+            EventListener(
+                event_listener_driver=GriptapeCloudEventListenerDriver(),
+            )
+        )
     else:
-        load_dotenv()
+        # If not, we need to load the .env file ourselves
+        from dotenv import load_dotenv
 
-    agent = Agent()
-    agent.run(input)
+        load_dotenv()
+        
+if __name__ == "__main__":
+    args = sys.argv[1:]
+
+    setup_cloud_listener()
+
+    Agent().run(*args)
