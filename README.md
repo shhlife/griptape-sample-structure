@@ -30,7 +30,7 @@ GT_CLOUD_API_KEY=<encrypted_value> # Fill in with your own key
 
 You can create a run via the API or in the UI. 
 
-**Input**: <string>
+**Input**: "Hello, how are you?"
 
 ### Locally
 
