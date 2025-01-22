@@ -1,10 +1,17 @@
 import os
+from enum import Enum
 
-import click
+import typer
 from griptape.drivers import GriptapeCloudEventListenerDriver, OpenAiChatPromptDriver
 from griptape.events import EventBus, EventListener
 from griptape.structures import Agent
 from griptape.tools import DateTimeTool
+
+
+class Model(str, Enum):
+    GPT4 = "gpt-4o"
+    GPT35 = "gpt-3.5-turbo"
+    GPT4_MINI = "gpt-4o-mini"
 
 
 def setup_cloud_listener():
@@ -23,25 +30,20 @@ def setup_cloud_listener():
         load_dotenv()
 
 
-@click.command()
-@click.argument("prompt")
-@click.option(
-    "--model",
-    "-m",
-    type=click.Choice(["gpt-4o", "gpt-3.5-turbo", "gpt-4o-mini"], case_sensitive=False),
-    default="gpt-4o",
-    show_default=True,
-    help="The model to use",
-)
-def run(prompt, model):
-    """Runs the agent with the given prompt and optional model selection."""
-    setup_cloud_listener()
+app = typer.Typer(add_completion=False)
 
-    agent = Agent(
+
+@app.command()
+def run(
+    prompt: str,
+    model: Model = typer.Option(Model.GPT4, "--model", "-m", help="The model to use"),
+):
+    """Run the agent with a prompt."""
+    setup_cloud_listener()
+    Agent(
         prompt_driver=OpenAiChatPromptDriver(model=model), tools=[DateTimeTool()]
-    )
-    agent.run(prompt)
+    ).run(prompt)
 
 
 if __name__ == "__main__":
-    run()
+    app()
