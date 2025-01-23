@@ -3,7 +3,7 @@ from enum import Enum
 
 import typer
 from griptape.drivers import GriptapeCloudEventListenerDriver, OpenAiChatPromptDriver
-from griptape.events import EventBus, EventListener
+from griptape.events import EventBus, EventListener, StartActionsSubtaskEvent
 from griptape.structures import Agent
 from griptape.tools import DateTimeTool
 
@@ -20,6 +20,7 @@ def setup_cloud_listener():
         # If so, the runtime takes care of loading the .env file
         EventBus.add_event_listener(
             EventListener(
+                event_types=[StartActionsSubtaskEvent],
                 event_listener_driver=GriptapeCloudEventListenerDriver(),
             )
         )
