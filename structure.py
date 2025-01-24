@@ -54,7 +54,7 @@ def run(
     Agent(
         prompt_driver=OpenAiChatPromptDriver(model=model, stream=True),
         tools=[DateTimeTool()],
-    ).run_stream(prompt)
+    ).run(prompt)
 
 
 if __name__ == "__main__":
