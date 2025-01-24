@@ -25,6 +25,11 @@ def setup_cloud_listener():
             )
         )
     else:
+        EventBus.add_event_listener(
+            EventListener(
+                event_types=[StartActionsSubtaskEvent],
+            )
+        )
         # If not, we need to load the .env file ourselves
         from dotenv import load_dotenv
 
@@ -43,7 +48,7 @@ def run(
     setup_cloud_listener()
     Agent(
         prompt_driver=OpenAiChatPromptDriver(model=model), tools=[DateTimeTool()]
-    ).run(prompt)
+    ).run_stream(prompt)
 
 
 if __name__ == "__main__":
