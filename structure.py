@@ -24,7 +24,6 @@ def setup_cloud_listener():
         # If so, the runtime takes care of loading the .env file
         EventBus.add_event_listener(
             EventListener(
-                # event_types=[StartActionsSubtaskEvent, TextChunkEvent],
                 event_listener_driver=GriptapeCloudEventListenerDriver(),
             )
         )
