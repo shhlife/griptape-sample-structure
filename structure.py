@@ -1,7 +1,7 @@
 import os
 
 import typer
-from griptape.artifacts import TextArtifact
+from griptape.artifacts import ListArtifact, TextArtifact
 from griptape.drivers import GriptapeCloudEventListenerDriver
 from griptape.events import (
     EventBus,
@@ -44,8 +44,8 @@ def run(prompt: str):
     setup_cloud_listener()
 
     print("Publishing final event...")
-    artifacts = [agent.output]  # listy mc listerson
-
+    artifacts = ListArtifact([agent.output])  # listy mc listerson
+    print(artifacts)
     task_input = TextArtifact(value=None)
     done_event = FinishStructureRunEvent(
         output_task_input=task_input, output_task_output=artifacts
