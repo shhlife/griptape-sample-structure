@@ -40,7 +40,10 @@ def run(
 ):
     """Run the agent with a prompt."""
     setup_cloud_listener()
-    Agent().run(prompt)
+    agent = Agent()
+    agent.run(prompt)
+
+    print(agent.output)
 
 
 if __name__ == "__main__":
