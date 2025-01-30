@@ -8,14 +8,6 @@ This is an example structure that can be used to run a Griptape Agent. The agent
 
 **Output**: `Fantastic, thank you for asking. How can I help?`
 
-## Paramters
-
-You can pass a `model` parameter to the structure, specifying what OpenAI model is used. 
-
-```
---model  -m      [gpt-4o|gpt-3.5-turbo|gpt-4o-mini]  The model to use [default: gpt-4o]                                   
-```
-
 ## Running this Structure
 
 ### Griptape Cloud
@@ -27,20 +19,12 @@ You can create a run via the API or in the UI.
 Hello, how are you?
 ```
 
-If you want to pass the model as a parameter, add the `--model` parameter and then the model you'd like to use, each on a separate line:
-
-```
-Hello, how are you?
---model
-gpt-3.5-turbo
-```
-
 ### Locally
 
 You can run this locally by passing an argument to your script.
 
 ```python
-python structure.py "Hello, how are you?" --model gpt-3.5-turbo
+python structure.py "Hello, how are you?" 
 ```
 
 ## Requirements
