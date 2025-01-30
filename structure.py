@@ -16,7 +16,6 @@ def setup_cloud_listener():
     # Are we running in a managed environment?
     if "GT_CLOUD_STRUCTURE_RUN_ID" in os.environ:
         # If so, the runtime takes care of loading the .env file
-        print("HOLY CRAP!! I'm a cloud listener!!")
         EventBus.add_event_listener(
             EventListener(
                 event_listener_driver=GriptapeCloudEventListenerDriver(),
@@ -45,7 +44,7 @@ def run(prompt: str):
     setup_cloud_listener()
 
     print("Publishing final event...")
-    artifacts = agent.output
+    artifacts = [agent.output]  # listy mc listerson
 
     task_input = TextArtifact(value=None)
     done_event = FinishStructureRunEvent(
