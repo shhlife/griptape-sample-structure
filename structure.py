@@ -9,14 +9,6 @@ from griptape.events import (
     StartActionsSubtaskEvent,
 )
 from griptape.structures import Agent
-from griptape.tools import DateTimeTool
-
-
-class Model(str, Enum):
-    GPT4 = "gpt-4o"
-    GPT35 = "gpt-3.5-turbo"
-    GPT4_MINI = "gpt-4o-mini"
-
 
 def setup_cloud_listener():
     # Are we running in a managed environment?
@@ -44,15 +36,11 @@ app = typer.Typer(add_completion=False)
 
 @app.command()
 def run(
-    prompt: str,
-    model: Model = typer.Option(Model.GPT4, "--model", "-m", help="The model to use"),
+    prompt: str
 ):
     """Run the agent with a prompt."""
     setup_cloud_listener()
-    Agent(
-        prompt_driver=OpenAiChatPromptDriver(model=model, stream=True),
-        tools=[DateTimeTool()],
-    ).run(prompt)
+    Agent().run(prompt)
 
 
 if __name__ == "__main__":
