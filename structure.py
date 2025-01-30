@@ -1,10 +1,12 @@
 import os
 
 import typer
+from griptape.artifacts import ListArtifact, TextArtifact
 from griptape.drivers import GriptapeCloudEventListenerDriver
 from griptape.events import (
     EventBus,
     EventListener,
+    FinishStructureRunEvent,
     StartActionsSubtaskEvent,
 )
 from griptape.structures import Agent
@@ -37,19 +39,38 @@ app = typer.Typer(add_completion=False)
 @app.command()
 def run(prompt: str):
     """Run the agent with a prompt."""
-    setup_cloud_listener()
-    agent = Agent()
-    agent.run(prompt)
 
-    # print("Publishing final event...")
-    # artifacts = ListArtifact([agent.output])  # listy mc listerson
-    # print(artifacts)
-    # task_input = TextArtifact(value=None)
-    # done_event = FinishStructureRunEvent(
-    #     output_task_input=task_input, output_task_output=artifacts
-    # )
+    # If you want to run a Griptape Structure, set this to True
+    # otherwise, if you're just running regular Python code, set it to False
+    use_structure = False
 
-    # EventBus.publish_event(done_event, flush=True)
+    if use_structure:
+        # Setup the cloud listener before Griptape Structure
+        setup_cloud_listener()
+
+        # Run the Griptape Structure
+        agent = Agent()
+        agent.run(prompt)
+    else:
+        # Run whatever code you want and make sure to save the output as a TextArtifact
+        output_artifact = TextArtifact("Hello from a Griptape Cloud Structure.")
+
+        # Create Input and Output Artifacts
+        task_input = TextArtifact(value=None)
+        task_output = ListArtifact([output_artifact])
+        print(task_output)
+
+        # Setup the cloud listener after your code, and before
+        # publishing the FinishStructureRunEvent
+        setup_cloud_listener()
+
+        # Create the FinishStructureRunEvent
+        done_event = FinishStructureRunEvent(
+            output_task_input=task_input, output_task_output=task_output
+        )
+
+        # Publish the FinishStructureRunEvent
+        EventBus.publish_event(done_event, flush=True)
 
 
 if __name__ == "__main__":
