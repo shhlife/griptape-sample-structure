@@ -1,6 +1,6 @@
-# Griptape Sample Structure
+# Griptape Sample Structure Template
 
-This is an example structure that can be used to run a Griptape Agent or publish the output from generic Python Code.
+This is an example structure template that can be used to run a Griptape Agent or publish the output from generic Python Code.
 
 ## How it works
 
