@@ -1,12 +1,10 @@
 import os
 
 import typer
-from griptape.artifacts import ListArtifact, TextArtifact
 from griptape.drivers import GriptapeCloudEventListenerDriver
 from griptape.events import (
     EventBus,
     EventListener,
-    FinishStructureRunEvent,
     StartActionsSubtaskEvent,
 )
 from griptape.structures import Agent
@@ -39,19 +37,19 @@ app = typer.Typer(add_completion=False)
 @app.command()
 def run(prompt: str):
     """Run the agent with a prompt."""
+    setup_cloud_listener()
     agent = Agent()
     agent.run(prompt)
-    setup_cloud_listener()
 
-    print("Publishing final event...")
-    artifacts = ListArtifact([agent.output])  # listy mc listerson
-    print(artifacts)
-    task_input = TextArtifact(value=None)
-    done_event = FinishStructureRunEvent(
-        output_task_input=task_input, output_task_output=artifacts
-    )
+    # print("Publishing final event...")
+    # artifacts = ListArtifact([agent.output])  # listy mc listerson
+    # print(artifacts)
+    # task_input = TextArtifact(value=None)
+    # done_event = FinishStructureRunEvent(
+    #     output_task_input=task_input, output_task_output=artifacts
+    # )
 
-    EventBus.publish_event(done_event, flush=True)
+    # EventBus.publish_event(done_event, flush=True)
 
 
 if __name__ == "__main__":
