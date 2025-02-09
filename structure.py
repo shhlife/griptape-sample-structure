@@ -1,6 +1,7 @@
 from typing import List
 
 import typer
+from griptape.artifacts import TextArtifact
 from griptape.structures import Agent
 from griptape.utils import GriptapeCloudStructure
 
@@ -21,8 +22,8 @@ def run(args: List[str] = typer.Argument(...)):
             agent.run(args)
         else:
             # Run whatever code you want and then set the context.output with the response you want to send.
-            # The output can be a string, an Artifact, or a ListArtifact
-            output_msg = f"You sent: {args}"
+            # The output must be a TextArtifact or ListArtifact
+            output_msg = TextArtifact(f"You sent: {args}")
 
             # Use context.output to publish the output message
             context.output = output_msg
